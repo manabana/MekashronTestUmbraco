@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MekashronTest/MekashronTest.csproj" />
+  <Project Path="MekashronTestUmbraco/MekashronTestUmbraco.csproj" />
+</Solution>
