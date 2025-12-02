@@ -1,20 +1,5 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="/css/style.css" />
-</head>
-<body>
-
-    @await Html.PartialAsync("Partials/Header")
-
-    <main>
-        @RenderBody()
-    </main>
-
-    @await Html.PartialAsync("Partials/Footer")
-
-</body>
-</html>
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+	Layout = "Index.cshtml";
+}

@@ -1,5 +1,203 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
-@{
-	Layout = "Layout.cshtml";
-}
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+<!DOCTYPE html>
+<html>
+
+@await Html.PartialAsync("Partials/Head")
+
+<body>
+
+    <div class="site" id="page">
+
+        @await Html.PartialAsync("Partials/Header")
+
+        <main class="main" id="primary">
+            <section class="hero" data-mobile-bg="" data-desktop-bg="assets/images/hero.png">
+                <div class="container">
+                    <h1 style="text-align: center;"><b>Boost Your Business with AI</b> <br> 20 Years of Development
+                        Experience</h1>
+                    <p style="text-align: center;">With over two decades of proven software development experience, we
+                        specialize <br> in building advanced platforms and are experts in AI-driven automation solutions. <br>
+                        From enterprise tools to industry specific systems, we deliver innovation, reliability, and
+                        scale
+                    </p>
+                    <div class="buttons">
+                        <a href="#" class="button">Explore Solutions</a>
+                        <a href="#" class="button button--dark">Contact us</a>
+                    </div>
+                </div>
+            </section>
+            <section class="expertise">
+                <div class="container">
+                    <h2>Our Expertise</h2>
+                    <ul class="expertise__list">
+                        <li>
+                            <div class="row">
+                                <img src="assets/images/icons/expertise/ai.svg" alt="ai">
+                                <h3>Platform Development</h3>
+                            </div>
+                            <p>Custom AI systems
+                                and scalable platforms</p>
+                            <a href="#" class="link">Learn more</a>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <img src="assets/images/icons/expertise/solution.svg" alt="solution">
+                                <h3>Enterprise Solutions</h3>
+                            </div>
+                            <p>Reliable systems
+                                for every business</p>
+                            <a href="#" class="link">Learn more</a>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <img src="assets/images/icons/expertise/gaming.svg" alt="gaming">
+                                <h3>Gaming & Entertainment</h3>
+                            </div>
+                            <p>iGaming platforms
+                                and integrations</p>
+                            <a href="#" class="link">Learn more</a>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <img src="assets/images/icons/expertise/apps.svg" alt="apps">
+                                <h3>Custom Apps</h3>
+                            </div>
+                            <p>Tailor made mobile
+                                and SaaS solutions</p>
+                            <a href="#" class="link">Learn more</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section class="products">
+                <div class="container">
+                    <h2>Our Products</h2>
+                    <ul class="products__list">
+                        <li class="">
+                            <img src="assets/images/products/profichat.png" alt="ai">
+                            <div class="content">
+                                <h3>Profichat.net</h3>
+                                <p>Omnichannel CRM and AI communication platform</p>
+                                <div class="buttons">
+                                    <a href="#" class="button button--dark">Learn more</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="">
+                            <img src="assets/images/products/zmenu.png" alt="solution">
+                            <div class="content">
+                                <h3>ZMenu.net</h3>
+                                <p>Solutions for restaurants and retailers</p>
+                                <div class="buttons">
+                                    <a href="#" class="button button--dark">Learn more</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="">
+                            <img src="assets/images/products/mekashron.png" alt="gaming">
+                            <div class="content">
+                                <h3>Mekashron CRM</h3>
+                                <p>Desktop CRM for Business and Call Centers available for download</p>
+                                <div class="buttons">
+                                    <a href="#" class="button button--accent">Download</a>
+                                    <a href="#" class="link">Learn more</a>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                    <!-- <div class="slider">
+                        <div class="swiper" id="products">
+                            <ul class="swiper-wrapper">
+                                <li class="swiper-slide">
+                                    <img src="assets/images/products/profichat.png" alt="ai">
+                                    <div class="content">
+                                        <h3>Profichat.net</h3>
+                                        <p>Omnichannel CRM and AI communication platform</p>
+                                        <div class="buttons">
+                                            <a href="#" class="button button--dark">Learn more</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <img src="assets/images/products/zmenu.png" alt="solution">
+                                    <div class="content">
+                                        <h3>ZMenu.net</h3>
+                                        <p>Solutions for restaurants and retailers</p>
+                                        <div class="buttons">
+                                            <a href="#" class="button button--dark">Learn more</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <img src="assets/images/products/mekashron.png" alt="gaming">
+                                    <div class="content">
+                                        <h3>Mekashron CRM</h3>
+                                        <p>Desktop CRM for Business and Call Centers available for download</p>
+                                        <div class="buttons">
+                                            <a href="#" class="button button--accent">Download</a>
+                                            <a href="#" class="link">Learn more</a>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="swiper__navigation">
+                            <div class="swiper-button-prev products-button-prev"></div>
+                            <div class="swiper-button-next products-button-next"></div>
+                        </div>
+                    </div> -->
+                </div>
+            </section>
+
+            <section class="about">
+                <div class="container">
+                    <div class="row">
+                        <div class="column">
+                            <h2>Industries We Serve</h2>
+                            <ul class="about__list">
+                                <li>
+                                    <img src="assets/images/serve/ai.svg" alt="ai">
+                                    <h3>AI and SaaS</h3>
+                                </li>
+                                <li>
+                                    <img src="assets/images/serve/cart.svg" alt="cart">
+                                    <h3>Retail and Hospitality</h3>
+                                </li>
+                                <li>
+                                    <img src="assets/images/serve/gaming.svg" alt="gaming">
+                                    <h3>iGaming</h3>
+                                </li>
+                                <li>
+                                    <img src="assets/images/serve/bag.svg" alt="bag">
+                                    <h3>Enterprises</h3>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="column">
+                            <h2>About Mekashron</h2>
+                            <p>With more than 20 years of development experience, Mekashron creates scalable
+                                and innovative platforms. Our team
+                                are experts in AI, cloud platforms, CRM, POS,
+                                and iGaming solutions for clients worldwide.
+                            </p>
+                            <a href="#" class="button button--accent">About Us</a>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="platform" data-mobile-bg="" data-desktop-bg="assets/images/platform.png">
+                <div class="container">
+                    <h2 style="text-align: center;">Ready to build your next platform?</h2>
+                    <p style="text-align: center;">Tell us about your project and goals. We will respond quickly.</p>
+                    <a href="#" class="button">Get in Touch</a>
+                </div>
+            </section>
+        </main>
+        @await Html.PartialAsync("Partials/Footer")
+    </div>
+</body>
+</html>
