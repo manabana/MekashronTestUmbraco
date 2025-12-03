@@ -5,18 +5,28 @@
     var stringsDictionary = Umbraco.Content(Guid.Parse("2cfa435c-8d4d-4f65-bc8e-73d0c8e6764e"));
 
     if (stringsDictionary is null) throw new Exception("siteSettings is null");
+
+    Guid downloadPageId = Guid.Parse("da6a2021-2276-429e-9944-9e83acec41e4");
+    IPublishedContent? downloadPage = Umbraco.Content(downloadPageId);
+    if (downloadPage is null) throw new Exception("Download page not found");
+
+    Guid indexPageId = Guid.Parse("41e0ccdd-4a1d-4aa8-a022-abc7d5555024");
+    IPublishedContent? indexPage = Umbraco.Content(indexPageId);
+    if (indexPage is null) throw new Exception("index page not found");
+
+    String indexPageUrl = indexPage.Url(stringsDictionary.GetCultureFromDomains());
+    String downloadPageUrl = downloadPage.Url(stringsDictionary.GetCultureFromDomains());
+
 }
 
 <footer class="footer">
     <div class="container">
         <div class="footer__inner">
             <div class="column">
-                <a href="index.html" class="logo">
+                <a href="@indexPageUrl" class="logo">
                     @stringsDictionary.Value("CompanyName")
                 </a>
                 <p>
-                    @*<b>Boost Efficiency, Cut Costs, and Accelerate Growth</b> <br> Powered by AI partner with 20
-                    years of experience, <br> you can <b>Trust</b>*@
                     @Html.Raw(stringsDictionary.Value<String>("CompanyDescription")?.Replace("\n", "<br>"))
                 </p>
             </div>
@@ -25,7 +35,7 @@
                     <nav class="footer__nav">
                         <ul class="footer__nav--list">
                             <li><a href="#">@stringsDictionary.Value("Products")</a></li>
-                            <li><a href="#">@stringsDictionary.Value("Solutions")</a></li>
+                            <li><a href="@downloadPageUrl">@stringsDictionary.Value("Solutions")</a></li>
                             <li><a href="#">@stringsDictionary.Value("About")</a></li>
                             <li><a href="#">@stringsDictionary.Value("Industries")</a></li>
                             <li><a href="#">@stringsDictionary.Value("Contacts")</a></li>
@@ -36,13 +46,13 @@
                             <ul class="footer__links--list">
                                 <li>
                                     <a href=" https://wa.me/#" target="_blank">
-                                        <img src="assets/images/icons/whatsapp-icon.svg" alt="whatsapp">
+                                        <img src="@(Url.Content("~/assets/images/icons/whatsapp-icon.svg"))" alt="whatsapp">
                                         @stringsDictionary.Value("ContactUsByWhatsApp")
                                     </a>
                                 </li>
                                 <li>
                                     <a href="mailto:info@mekashron.com">
-                                        <img src="assets/images/icons/mail.svg" alt="mail">
+                                        <img src="@(Url.Content("~/assets/images/icons/mail.svg"))" alt="mail">
                                         @stringsDictionary.Value("CompanyEmail")
                                     </a>
                                 </li>
@@ -52,26 +62,26 @@
                             <ul id="language-menu" class="language__list">
                                 <li id="menu-item-113" class="">
                                     <a href="#pll_switcher">
-                                        <img src="assets/images/icons/country/USA.svg" alt="USA" width="16"
+                                        <img src="@(Url.Content("~/assets/images/icons/country/USA.svg"))" alt="USA" width="16"
                                             height="11">
                                         <span>English</span></a>
                                     <ul class="sub-menu">
                                         <li id="menu-item-113-en" class="">
                                             <a href="#" hreflang="en-GB" lang="en-GB">
-                                                <img src="assets/images/icons/country/USA.svg" alt="USA"
+                                                <img src="@(Url.Content("~/assets/images/icons/country/USA.svg"))" alt="USA"
                                                     width="16" height="11">
                                                 <span>English</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#pll_switcher">
-                                                <img src="assets/images/icons/country/Ukraine.svg" alt="Ukraine"
+                                                <img src="@(Url.Content("~/assets/images/icons/country/Ukraine.svg"))" alt="Ukraine"
                                                     width="16" height="11">
                                                 <span>Українська</span></a>
                                         </li>
                                         <li id="menu-item-113-ru" class="">
                                             <a href="#" hreflang="ru-RU" lang="ru-RU">
-                                                <img src="assets/images/icons/country/Russia.svg" alt="Russia"
+                                                <img src="@(Url.Content("~/assets/images/icons/country/Russia.svg"))" alt="Russia"
                                                     width="16" height="11">
                                                 <span>Русский</span>
                                             </a>

@@ -1,39 +1,49 @@
 ﻿@inject Umbraco.Cms.Core.Web.IUmbracoContextAccessor _context
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
-
 @{
     var stringsDictionary = Umbraco.Content(Guid.Parse("2cfa435c-8d4d-4f65-bc8e-73d0c8e6764e"));
 
     if (stringsDictionary is null) throw new Exception("siteSettings is null");
+
+    Guid downloadPageId = Guid.Parse("da6a2021-2276-429e-9944-9e83acec41e4");
+    IPublishedContent? downloadPage = Umbraco.Content(downloadPageId);
+    if (downloadPage is null) throw new Exception("Download page not found");
+
+    Guid indexPageId = Guid.Parse("41e0ccdd-4a1d-4aa8-a022-abc7d5555024");
+    IPublishedContent? indexPage = Umbraco.Content(indexPageId);
+    if (indexPage is null) throw new Exception("index page not found");
+
+    String indexPageUrl = indexPage.Url(stringsDictionary.GetCultureFromDomains());
+    String downloadPageUrl = downloadPage.Url(stringsDictionary.GetCultureFromDomains());
 }
 
 <header class="header">
             <div class="container">
                 <div class="header__inner">
                     <button class="burger" id="burgerButton">
-                        <img src="assets/images/icons/burger.svg" alt="menu">
+                        <img src="@(Url.Content("~/assets/images/icons/burger.svg"))" alt="menu">
                     </button>
-                    <a href="/" class="logo">
+                    <a href="@indexPageUrl" class="logo">
                         @stringsDictionary.Value("CompanyName")
                     </a>
 
                     <nav class="header__navigation navigation">
                         <ul class="navigation__list">
                             <li class="menu-item ">
-                                <a href="/Download">@stringsDictionary.Value("Solutions")</a>
+                                <a href="@indexPageUrl">@stringsDictionary.Value("Solutions")</a>
                             </li>
 
                             <li class="menu-item">
-                                <a href="delivery.html">@stringsDictionary.Value("Products")</a>
+                                <a href="">@stringsDictionary.Value("Products")</a>
                             </li>
                             <li class="menu-item">
-                                <a href="blog.html">@stringsDictionary.Value("Industries")</a>
+                                <a href="">@stringsDictionary.Value("Industries")</a>
                             </li>
                             <li class="menu-item">
-                                <a href="payment.html">@stringsDictionary.Value("About")</a>
+                                <a href="">@stringsDictionary.Value("About")</a>
                             </li>
                             <li class="menu-item">
-                                <a href="payment.html">@stringsDictionary.Value("Contacts")</a>
+                                <a href="">@stringsDictionary.Value("Contacts")</a>
                             </li>
                         </ul>
                     </nav>
@@ -55,7 +65,7 @@
                                     fill="white" />
                             </svg>
                         </button>
-                        <a href="index.html" class="logo">
+                        <a href="@indexPageUrl" class="logo">
                             @stringsDictionary.Value("CompanyName")
                         </a>
                         <div class="header__actions row">
@@ -67,19 +77,19 @@
 
                 <ul class="navigation__list">
                     <li class="menu-item ">
-                        <a href="/Download">@stringsDictionary.Value("Solutions")</a>
+                        <a href="@downloadPageUrl">@stringsDictionary.Value("Solutions")</a>
                     </li>
                     <li class="menu-item">
-                        <a href="delivery.html">@stringsDictionary.Value("Products")</a>
+                        <a href="">@stringsDictionary.Value("Products")</a>
                     </li>
                     <li class="menu-item">
-                        <a href="blog.html">@stringsDictionary.Value("Industries")</a>
+                        <a href="">@stringsDictionary.Value("Industries")</a>
                     </li>
                     <li class="menu-item">
-                        <a href="payment.html">@stringsDictionary.Value("About")</a>
+                        <a href="">@stringsDictionary.Value("About")</a>
                     </li>
                     <li class="menu-item">
-                        <a href="payment.html">@stringsDictionary.Value("Contacts")</a>
+                        <a href="">@stringsDictionary.Value("Contacts")</a>
                     </li>
                 </ul>
             </nav>

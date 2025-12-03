@@ -1,6 +1,13 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
+@{
+    Guid indexPageId = Guid.Parse("41e0ccdd-4a1d-4aa8-a022-abc7d5555024");
+    IPublishedContent? indexPage = Umbraco.Content(indexPageId);
+    if (indexPage is null) throw new Exception("index page not found");
+}
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,10 +67,10 @@
 
     </div>
 
-    <script src="assets/js/jquery-3.7.1.min.js"></script>
-    <script src="assets/js/swiper-bundle.min.js"></script>
-    <script src="assets/js/select.js"></script>
-    <script src="assets/js/scripts.js"></script>
+    <script src="@(Url.Content("~/assets/js/jquery-3.7.1.min.js"))"></script>
+    <script src="@(Url.Content("~/assets/js/swiper-bundle.min.js"))"></script>
+    <script src="@(Url.Content("~/assets/js/select.js"))"></script>
+    <script src="@(Url.Content("~/assets/js/scripts.js"))"></script>
 </body>
 
 </html>

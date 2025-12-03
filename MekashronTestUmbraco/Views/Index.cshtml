@@ -1,5 +1,11 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
+@{
+    Guid downloadPageId = Guid.Parse("da6a2021-2276-429e-9944-9e83acec41e4");
+    IPublishedContent? downloadPage = Umbraco.Content(downloadPageId);
+    if (downloadPage is null) throw new Exception("Download page not found");
+}
+
 <!DOCTYPE html>
 <html>
 
@@ -12,7 +18,7 @@
         @await Html.PartialAsync("Partials/Header")
 
         <main class="main" id="primary">
-            <section class="hero" data-mobile-bg="" data-desktop-bg="assets/images/hero.png">
+            <section class="hero" data-mobile-bg="" data-desktop-bg="@(Url.Content("~/assets/images/hero.png"))">
                 <div class="container">
                     <h1 style="text-align: center;">@Html.Raw(Model.Value<String>("title")?.Replace("\n", "<br>"))</h1>
                     <p style="text-align: center;">
@@ -30,7 +36,7 @@
                     <ul class="expertise__list">
                         <li>
                             <div class="row">
-                                <img src="assets/images/icons/expertise/ai.svg" alt="ai">
+                                <img src="@(Url.Content("~/assets/images/icons/expertise/ai.svg"))" alt="ai">
                                 <h3>@Model.Value("platformDevelopment")</h3>
                             </div>
                             <p>@Model.Value("platformDevelopmentDescription")</p>
@@ -38,7 +44,7 @@
                         </li>
                         <li>
                             <div class="row">
-                                <img src="assets/images/icons/expertise/solution.svg" alt="solution">
+                                <img src="@(Url.Content("~/assets/images/icons/expertise/solution.svg"))" alt="solution">
                                 <h3>@Model.Value("enterpriseSolutions")</h3>
                             </div>
                             <p>@Model.Value("enterpriseSolutionsDescription")</p>
@@ -46,7 +52,7 @@
                         </li>
                         <li>
                             <div class="row">
-                                <img src="assets/images/icons/expertise/gaming.svg" alt="gaming">
+                                <img src="@(Url.Content("~/assets/images/icons/expertise/gaming.svg"))" alt="gaming">
                                 <h3>@Model.Value("gamingEntertainment")</h3>
                             </div>
                             <p>@Model.Value("gamingEntertainmentDescription")</p>
@@ -54,7 +60,7 @@
                         </li>
                         <li>
                             <div class="row">
-                                <img src="assets/images/icons/expertise/apps.svg" alt="apps">
+                                <img src="@(Url.Content("~/assets/images/icons/expertise/apps.svg"))" alt="apps">
                                 <h3>@Model.Value("customApps")</h3>
                             </div>
                             <p>@Model.Value("CustomAppsDescription")</p>
@@ -68,7 +74,7 @@
                     <h2>@Model.Value("ourProducts")</h2>
                     <ul class="products__list">
                         <li class="">
-                            <img src="assets/images/products/profichat.png" alt="ai">
+                            <img src="@(Url.Content("~/assets/images/products/profichat.png"))" alt="ai">
                             <div class="content">
                                 <h3>@Model.Value("ProfichatNet")</h3>
                                 <p>@Model.Value("ProfichatNetDescription")</p>
@@ -78,7 +84,7 @@
                             </div>
                         </li>
                         <li class="">
-                            <img src="assets/images/products/zmenu.png" alt="solution">
+                            <img src="@(Url.Content("~/assets/images/products/zmenu.png"))" alt="solution">
                             <div class="content">
                                 <h3>@Model.Value("zMenuNet")</h3>
                                 <p>@Model.Value("zMenuNetDescription")</p>
@@ -88,7 +94,7 @@
                             </div>
                         </li>
                         <li class="">
-                            <img src="assets/images/products/mekashron.png" alt="gaming">
+                            <img src="@(Url.Content("~/assets/images/products/mekashron.png"))" alt="gaming">
                             <div class="content">
                                 <h3>@Model.Value("mekashronCrm")</h3>
                                 <p>@Model.Value("mekashronCrmDescription")</p>
@@ -153,19 +159,19 @@
                             <h2>@Model.Value("industriesWeServe")</h2>
                             <ul class="about__list">
                                 <li>
-                                    <img src="assets/images/serve/ai.svg" alt="ai">
+                                    <img src="@(Url.Content("~/assets/images/serve/ai.svg"))" alt="ai">
                                     <h3>@Model.Value("aiAndSaas")</h3>
                                 </li>
                                 <li>
-                                    <img src="assets/images/serve/cart.svg" alt="cart">
+                                    <img src="@(Url.Content("~/assets/images/serve/cart.svg"))" alt="cart">
                                     <h3>@Model.Value("retailAndHospitality")</h3>
                                 </li>
                                 <li>
-                                    <img src="assets/images/serve/gaming.svg" alt="gaming">
+                                    <img src="@(Url.Content("~/assets/images/serve/gaming.svg"))" alt="gaming">
                                     <h3>@Model.Value("iGaming")</h3>
                                 </li>
                                 <li>
-                                    <img src="assets/images/serve/bag.svg" alt="bag">
+                                    <img src="@(Url.Content("~/assets/images/serve/bag.svg"))" alt="bag">
                                     <h3>@Model.Value("enterprises")</h3>
                                 </li>
                             </ul>
@@ -181,7 +187,7 @@
                     </div>
                 </div>
             </section>
-            <section class="platform" data-mobile-bg="" data-desktop-bg="assets/images/platform.png">
+            <section class="platform" data-mobile-bg="" data-desktop-bg="@(Url.Content("~/assets/images/platform.png"))">
                 <div class="container">
                     <h2 style="text-align: center;">@Model.Value("endTitle")</h2>
                     <p style="text-align: center;">@Model.Value("endText")</p>
@@ -191,9 +197,9 @@
         </main>
         @await Html.PartialAsync("Partials/Footer")
     </div>
-    <script src="assets/js/jquery-3.7.1.min.js"></script>
-    <script src="assets/js/swiper-bundle.min.js"></script>
-    <script src="assets/js/select.js"></script>
-    <script src="assets/js/scripts.js"></script>
+    <script src="@(Url.Content("~/assets/js/jquery-3.7.1.min.js"))"></script>
+    <script src="@(Url.Content("~/assets/js/swiper-bundle.min.js"))"></script>
+    <script src="@(Url.Content("~/assets/js/select.js"))"></script>
+    <script src="@(Url.Content("~/assets/js/scripts.js"))"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 <main class="main" id="primary">
-            <section class="hero" data-mobile-bg="" data-desktop-bg="assets/images/hero.png">
+            <section class="hero" data-mobile-bg="" data-desktop-bg="@(Url.Content("~/assets/images/hero.png"))">
                 <div class="container">
                     <h1 style="text-align: center;"><b>Boost Your Business with AI</b> <br> 20 Years of Development
                         Experience</h1>
@@ -23,7 +23,7 @@
                     <ul class="expertise__list">
                         <li>
                             <div class="row">
-                                <img src="assets/images/icons/expertise/ai.svg" alt="ai">
+                                <img src="@(Url.Content("~/assets/images/icons/expertise/ai.svg"))" alt="ai">
                                 <h3>Platform Development</h3>
                             </div>
                             <p>Custom AI systems
@@ -32,7 +32,7 @@
                         </li>
                         <li>
                             <div class="row">
-                                <img src="assets/images/icons/expertise/solution.svg" alt="solution">
+                                <img src="@(Url.Content("~/assets/images/icons/expertise/solution.svg"))" alt="solution">
                                 <h3>Enterprise Solutions</h3>
                             </div>
                             <p>Reliable systems
@@ -41,7 +41,7 @@
                         </li>
                         <li>
                             <div class="row">
-                                <img src="assets/images/icons/expertise/gaming.svg" alt="gaming">
+                                <img src="@(Url.Content("~/assets/images/icons/expertise/gaming.svg"))" alt="gaming">
                                 <h3>Gaming & Entertainment</h3>
                             </div>
                             <p>iGaming platforms
@@ -50,7 +50,7 @@
                         </li>
                         <li>
                             <div class="row">
-                                <img src="assets/images/icons/expertise/apps.svg" alt="apps">
+                                <img src="@(Url.Content("~/assets/images/icons/expertise/apps.svg"))" alt="apps">
                                 <h3>Custom Apps</h3>
                             </div>
                             <p>Tailor made mobile
@@ -65,7 +65,7 @@
                     <h2>Our Products</h2>
                     <ul class="products__list">
                         <li class="">
-                            <img src="assets/images/products/profichat.png" alt="ai">
+                            <img src="@(Url.Content("~/assets/images/products/profichat.png"))" alt="ai">
                             <div class="content">
                                 <h3>Profichat.net</h3>
                                 <p>Omnichannel CRM and AI communication platform</p>
@@ -75,7 +75,7 @@
                             </div>
                         </li>
                         <li class="">
-                            <img src="assets/images/products/zmenu.png" alt="solution">
+                            <img src="@(Url.Content("~/assets/images/products/zmenu.png"))" alt="solution">
                             <div class="content">
                                 <h3>ZMenu.net</h3>
                                 <p>Solutions for restaurants and retailers</p>
@@ -85,7 +85,7 @@
                             </div>
                         </li>
                         <li class="">
-                            <img src="assets/images/products/mekashron.png" alt="gaming">
+                            <img src="@(Url.Content("~/assets/images/products/mekashron.png"))" alt="gaming">
                             <div class="content">
                                 <h3>Mekashron CRM</h3>
                                 <p>Desktop CRM for Business and Call Centers available for download</p>
@@ -150,19 +150,19 @@
                             <h2>Industries We Serve</h2>
                             <ul class="about__list">
                                 <li>
-                                    <img src="assets/images/serve/ai.svg" alt="ai">
+                                    <img src="@(Url.Content("~/assets/images/serve/ai.svg"))" alt="ai">
                                     <h3>AI and SaaS</h3>
                                 </li>
                                 <li>
-                                    <img src="assets/images/serve/cart.svg" alt="cart">
+                                    <img src="@(Url.Content("~/assets/images/serve/cart.svg"))" alt="cart">
                                     <h3>Retail and Hospitality</h3>
                                 </li>
                                 <li>
-                                    <img src="assets/images/serve/gaming.svg" alt="gaming">
+                                    <img src="@(Url.Content("~/assets/images/serve/gaming.svg"))" alt="gaming">
                                     <h3>iGaming</h3>
                                 </li>
                                 <li>
-                                    <img src="assets/images/serve/bag.svg" alt="bag">
+                                    <img src="@(Url.Content("~/assets/images/serve/bag.svg"))" alt="bag">
                                     <h3>Enterprises</h3>
                                 </li>
                             </ul>
@@ -180,7 +180,7 @@
                     </div>
                 </div>
             </section>
-            <section class="platform" data-mobile-bg="" data-desktop-bg="assets/images/platform.png">
+            <section class="platform" data-mobile-bg="" data-desktop-bg="@(Url.Content("~/assets/images/platform.png"))">
                 <div class="container">
                     <h2 style="text-align: center;">Ready to build your next platform?</h2>
                     <p style="text-align: center;">Tell us about your project and goals. We will respond quickly.</p>
