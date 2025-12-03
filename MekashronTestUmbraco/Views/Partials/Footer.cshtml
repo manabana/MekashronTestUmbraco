@@ -1,24 +1,34 @@
-﻿<footer class="footer">
+﻿@inject Umbraco.Cms.Core.Web.IUmbracoContextAccessor _context
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    var stringsDictionary = Umbraco.Content(Guid.Parse("2cfa435c-8d4d-4f65-bc8e-73d0c8e6764e"));
+
+    if (stringsDictionary is null) throw new Exception("siteSettings is null");
+}
+
+<footer class="footer">
     <div class="container">
         <div class="footer__inner">
             <div class="column">
                 <a href="index.html" class="logo">
-                    Mekashron
+                    @stringsDictionary.Value("CompanyName")
                 </a>
                 <p>
-                    <b>Boost Efficiency, Cut Costs, and Accelerate Growth</b> <br> Powered by AI partner with 20
-                    years of experience, <br> you can <b>Trust</b>
+                    @*<b>Boost Efficiency, Cut Costs, and Accelerate Growth</b> <br> Powered by AI partner with 20
+                    years of experience, <br> you can <b>Trust</b>*@
+                    @Html.Raw(stringsDictionary.Value<String>("CompanyDescription")?.Replace("\n", "<br>"))
                 </p>
             </div>
             <div class="column">
                 <div class="footer__actions">
                     <nav class="footer__nav">
                         <ul class="footer__nav--list">
-                            <li><a href="#">Products</a></li>
-                            <li><a href="#">Solutions</a></li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Indusries</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">@stringsDictionary.Value("Products")</a></li>
+                            <li><a href="#">@stringsDictionary.Value("Solutions")</a></li>
+                            <li><a href="#">@stringsDictionary.Value("About")</a></li>
+                            <li><a href="#">@stringsDictionary.Value("Industries")</a></li>
+                            <li><a href="#">@stringsDictionary.Value("Contacts")</a></li>
                         </ul>
                     </nav>
                     <div class="column">
@@ -27,13 +37,13 @@
                                 <li>
                                     <a href=" https://wa.me/#" target="_blank">
                                         <img src="assets/images/icons/whatsapp-icon.svg" alt="whatsapp">
-                                        Contact us by
-                                        WhatsApp</a>
+                                        @stringsDictionary.Value("ContactUsByWhatsApp")
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="mailto:info@mekashron.com">
                                         <img src="assets/images/icons/mail.svg" alt="mail">
-                                        info@mekashron.com
+                                        @stringsDictionary.Value("CompanyEmail")
                                     </a>
                                 </li>
                             </ul>
@@ -75,7 +85,7 @@
             </div>
         </div>
         <div class="copy">
-            <p>© 2025 Mekashron. All rights reserved.</p>
+            <p>@stringsDictionary.Value("copyRightText")</p>
         </div>
     </div>
 </footer>

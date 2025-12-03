@@ -1,8 +1,9 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
 <!DOCTYPE html>
 <html>
 
-@await Html.PartialAsync("Partials/Head")
+    @await Html.PartialAsync("Partials/Head")
 
 <body>
 
@@ -13,94 +14,87 @@
         <main class="main" id="primary">
             <section class="hero" data-mobile-bg="" data-desktop-bg="assets/images/hero.png">
                 <div class="container">
-                    <h1 style="text-align: center;"><b>Boost Your Business with AI</b> <br> 20 Years of Development
-                        Experience</h1>
-                    <p style="text-align: center;">With over two decades of proven software development experience, we
-                        specialize <br> in building advanced platforms and are experts in AI-driven automation solutions. <br>
-                        From enterprise tools to industry specific systems, we deliver innovation, reliability, and
-                        scale
+                    <h1 style="text-align: center;">@Html.Raw(Model.Value<String>("title")?.Replace("\n", "<br>"))</h1>
+                    <p style="text-align: center;">
+                        @Html.Raw(Model.Value<String>("pageDescription")?.Replace("\n", "<br>")) 
                     </p>
                     <div class="buttons">
-                        <a href="#" class="button">Explore Solutions</a>
-                        <a href="#" class="button button--dark">Contact us</a>
+                        <a href="#" class="button">@Model.Value("exploreSolutions")</a>
+                        <a href="#" class="button button--dark">@Model.Value("contactUs")</a>
                     </div>
                 </div>
             </section>
             <section class="expertise">
                 <div class="container">
-                    <h2>Our Expertise</h2>
+                    <h2>@Model.Value("ourExpertise")</h2>
                     <ul class="expertise__list">
                         <li>
                             <div class="row">
                                 <img src="assets/images/icons/expertise/ai.svg" alt="ai">
-                                <h3>Platform Development</h3>
+                                <h3>@Model.Value("platformDevelopment")</h3>
                             </div>
-                            <p>Custom AI systems
-                                and scalable platforms</p>
-                            <a href="#" class="link">Learn more</a>
+                            <p>@Model.Value("platformDevelopmentDescription")</p>
+                            <a href="#" class="link">@Model.Value("learnMore")</a>
                         </li>
                         <li>
                             <div class="row">
                                 <img src="assets/images/icons/expertise/solution.svg" alt="solution">
-                                <h3>Enterprise Solutions</h3>
+                                <h3>@Model.Value("enterpriseSolutions")</h3>
                             </div>
-                            <p>Reliable systems
-                                for every business</p>
-                            <a href="#" class="link">Learn more</a>
+                            <p>@Model.Value("enterpriseSolutionsDescription")</p>
+                            <a href="#" class="link">@Model.Value("LearnMore")</a>
                         </li>
                         <li>
                             <div class="row">
                                 <img src="assets/images/icons/expertise/gaming.svg" alt="gaming">
-                                <h3>Gaming & Entertainment</h3>
+                                <h3>@Model.Value("gamingEntertainment")</h3>
                             </div>
-                            <p>iGaming platforms
-                                and integrations</p>
-                            <a href="#" class="link">Learn more</a>
+                            <p>@Model.Value("gamingEntertainmentDescription")</p>
+                            <a href="#" class="link">@Model.Value("LearnMore")</a>
                         </li>
                         <li>
                             <div class="row">
                                 <img src="assets/images/icons/expertise/apps.svg" alt="apps">
-                                <h3>Custom Apps</h3>
+                                <h3>@Model.Value("customApps")</h3>
                             </div>
-                            <p>Tailor made mobile
-                                and SaaS solutions</p>
-                            <a href="#" class="link">Learn more</a>
+                            <p>@Model.Value("CustomAppsDescription")</p>
+                            <a href="#" class="link">@Model.Value("LearnMore")</a>
                         </li>
                     </ul>
                 </div>
             </section>
             <section class="products">
                 <div class="container">
-                    <h2>Our Products</h2>
+                    <h2>@Model.Value("ourProducts")</h2>
                     <ul class="products__list">
                         <li class="">
                             <img src="assets/images/products/profichat.png" alt="ai">
                             <div class="content">
-                                <h3>Profichat.net</h3>
-                                <p>Omnichannel CRM and AI communication platform</p>
+                                <h3>@Model.Value("ProfichatNet")</h3>
+                                <p>@Model.Value("ProfichatNetDescription")</p>
                                 <div class="buttons">
-                                    <a href="#" class="button button--dark">Learn more</a>
+                                    <a href="#" class="button button--dark">@Model.Value("LearnMore")</a>
                                 </div>
                             </div>
                         </li>
                         <li class="">
                             <img src="assets/images/products/zmenu.png" alt="solution">
                             <div class="content">
-                                <h3>ZMenu.net</h3>
-                                <p>Solutions for restaurants and retailers</p>
+                                <h3>@Model.Value("zMenuNet")</h3>
+                                <p>@Model.Value("zMenuNetDescription")</p>
                                 <div class="buttons">
-                                    <a href="#" class="button button--dark">Learn more</a>
+                                    <a href="#" class="button button--dark">@Model.Value("LearnMore")</a>
                                 </div>
                             </div>
                         </li>
                         <li class="">
                             <img src="assets/images/products/mekashron.png" alt="gaming">
                             <div class="content">
-                                <h3>Mekashron CRM</h3>
-                                <p>Desktop CRM for Business and Call Centers available for download</p>
+                                <h3>@Model.Value("mekashronCrm")</h3>
+                                <p>@Model.Value("mekashronCrmDescription")</p>
                                 <div class="buttons">
-                                    <a href="#" class="button button--accent">Download</a>
-                                    <a href="#" class="link">Learn more</a>
+                                    <a href="#" class="button button--accent">@Model.Value("download")</a>
+                                    <a href="#" class="link">@Model.Value("LearnMore")</a>
                                 </div>
                             </div>
                         </li>
@@ -156,34 +150,32 @@
                 <div class="container">
                     <div class="row">
                         <div class="column">
-                            <h2>Industries We Serve</h2>
+                            <h2>@Model.Value("industriesWeServe")</h2>
                             <ul class="about__list">
                                 <li>
                                     <img src="assets/images/serve/ai.svg" alt="ai">
-                                    <h3>AI and SaaS</h3>
+                                    <h3>@Model.Value("aiAndSaas")</h3>
                                 </li>
                                 <li>
                                     <img src="assets/images/serve/cart.svg" alt="cart">
-                                    <h3>Retail and Hospitality</h3>
+                                    <h3>@Model.Value("retailAndHospitality")</h3>
                                 </li>
                                 <li>
                                     <img src="assets/images/serve/gaming.svg" alt="gaming">
-                                    <h3>iGaming</h3>
+                                    <h3>@Model.Value("iGaming")</h3>
                                 </li>
                                 <li>
                                     <img src="assets/images/serve/bag.svg" alt="bag">
-                                    <h3>Enterprises</h3>
+                                    <h3>@Model.Value("enterprises")</h3>
                                 </li>
                             </ul>
                         </div>
                         <div class="column">
-                            <h2>About Mekashron</h2>
-                            <p>With more than 20 years of development experience, Mekashron creates scalable
-                                and innovative platforms. Our team
-                                are experts in AI, cloud platforms, CRM, POS,
-                                and iGaming solutions for clients worldwide.
+                            <h2>@Model.Value("aboutCompany")</h2>
+                            <p>
+                                @Html.Raw(@Model.Value<String>("aboutCompanyText"))
                             </p>
-                            <a href="#" class="button button--accent">About Us</a>
+                            <a href="#" class="button button--accent">@Model.Value("aboutUs")</a>
 
                         </div>
                     </div>
@@ -191,13 +183,17 @@
             </section>
             <section class="platform" data-mobile-bg="" data-desktop-bg="assets/images/platform.png">
                 <div class="container">
-                    <h2 style="text-align: center;">Ready to build your next platform?</h2>
-                    <p style="text-align: center;">Tell us about your project and goals. We will respond quickly.</p>
-                    <a href="#" class="button">Get in Touch</a>
+                    <h2 style="text-align: center;">@Model.Value("endTitle")</h2>
+                    <p style="text-align: center;">@Model.Value("endText")</p>
+                    <a href="#" class="button">@Model.Value("getInTouch")</a>
                 </div>
             </section>
         </main>
         @await Html.PartialAsync("Partials/Footer")
     </div>
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/select.js"></script>
+    <script src="assets/js/scripts.js"></script>
 </body>
 </html>
