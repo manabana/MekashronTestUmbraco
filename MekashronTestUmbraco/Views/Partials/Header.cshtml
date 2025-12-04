@@ -1,5 +1,7 @@
 ﻿@inject Umbraco.Cms.Core.Web.IUmbracoContextAccessor _context
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using System.Globalization;
+
 @{
     var stringsDictionary = Umbraco.Content(Guid.Parse("2cfa435c-8d4d-4f65-bc8e-73d0c8e6764e"));
 
@@ -13,8 +15,10 @@
     IPublishedContent? indexPage = Umbraco.Content(indexPageId);
     if (indexPage is null) throw new Exception("index page not found");
 
-    String indexPageUrl = indexPage.Url(stringsDictionary.GetCultureFromDomains());
-    String downloadPageUrl = downloadPage.Url(stringsDictionary.GetCultureFromDomains());
+    String currentLang = CultureInfo.CurrentUICulture.Name ?? "en";
+
+    String indexPageUrl = indexPage.Url(currentLang);
+    String downloadPageUrl = downloadPage.Url(currentLang);
 }
 
 <header class="header">
@@ -30,7 +34,7 @@
                     <nav class="header__navigation navigation">
                         <ul class="navigation__list">
                             <li class="menu-item ">
-                                <a href="@indexPageUrl">@stringsDictionary.Value("Solutions")</a>
+                                <a href="@downloadPageUrl">@stringsDictionary.Value("Solutions")</a>
                             </li>
 
                             <li class="menu-item">

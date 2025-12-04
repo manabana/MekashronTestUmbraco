@@ -1,5 +1,6 @@
 ﻿@inject Umbraco.Cms.Core.Web.IUmbracoContextAccessor _context
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using System.Globalization
 
 @{
     var stringsDictionary = Umbraco.Content(Guid.Parse("2cfa435c-8d4d-4f65-bc8e-73d0c8e6764e"));
@@ -14,8 +15,24 @@
     IPublishedContent? indexPage = Umbraco.Content(indexPageId);
     if (indexPage is null) throw new Exception("index page not found");
 
-    String indexPageUrl = indexPage.Url(stringsDictionary.GetCultureFromDomains());
-    String downloadPageUrl = downloadPage.Url(stringsDictionary.GetCultureFromDomains());
+    String currentLang = CultureInfo.CurrentUICulture.Name ?? "en";
+
+    String indexPageUrl = indexPage.Url(currentLang);
+    String downloadPageUrl = downloadPage.Url(currentLang);
+
+    Func<string, string> flagFor = code => code switch
+    {
+        "ru" => Url.Content("~/assets/images/icons/country/Russia.svg"),
+        "uk" => Url.Content("~/assets/images/icons/country/Ukraine.svg"),
+        _ => Url.Content("~/assets/images/icons/country/USA.svg"),
+    };
+    Func<string, string> labelFor = code => code switch
+    {
+        "ru" => "Русский",
+        "uk" => "Українська",
+        _ => "English",
+    };
+
 
 }
 
@@ -61,26 +78,28 @@
                         <button class="language" id="language_btn">
                             <ul id="language-menu" class="language__list">
                                 <li id="menu-item-113" class="">
-                                    <a href="#pll_switcher">
-                                        <img src="@(Url.Content("~/assets/images/icons/country/USA.svg"))" alt="USA" width="16"
-                                            height="11">
-                                        <span>English</span></a>
+                                    <a class="language__current" href="#pll_switcher">
+                                        <img src="@flagFor(currentLang)" alt="@labelFor(currentLang)" width="16" height="11" />
+                                        <span>@labelFor(currentLang)</span>
+                                    </a>
+
+                                    
                                     <ul class="sub-menu">
                                         <li id="menu-item-113-en" class="">
-                                            <a href="#" hreflang="en-GB" lang="en-GB">
+                                            <a href="@Model.Url("en")" hreflang="en-GB" lang="en-GB">
                                                 <img src="@(Url.Content("~/assets/images/icons/country/USA.svg"))" alt="USA"
                                                     width="16" height="11">
                                                 <span>English</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#pll_switcher">
+                                            <a href="@Model.Url("uk")">
                                                 <img src="@(Url.Content("~/assets/images/icons/country/Ukraine.svg"))" alt="Ukraine"
                                                     width="16" height="11">
                                                 <span>Українська</span></a>
                                         </li>
                                         <li id="menu-item-113-ru" class="">
-                                            <a href="#" hreflang="ru-RU" lang="ru-RU">
+                                            <a href="@Model.Url("ru")" hreflang="ru-RU" lang="ru-RU">
                                                 <img src="@(Url.Content("~/assets/images/icons/country/Russia.svg"))" alt="Russia"
                                                     width="16" height="11">
                                                 <span>Русский</span>
