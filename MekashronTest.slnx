@@ -1,3 +1,7 @@
 <Solution>
+  <Project Path="Mekashron.Domain/Mekashron.Domain.csproj" />
+  <Project Path="Mekashron.Repository/Mekashron.Repository.csproj" />
+  <Project Path="Mekashron.Services/Mekashron.Services.csproj" />
+  <Project Path="Mekashron.Tools/Mekashron.Tools.csproj" />
   <Project Path="MekashronTestUmbraco/MekashronTestUmbraco.csproj" />
 </Solution>

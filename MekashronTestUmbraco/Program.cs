@@ -1,4 +1,12 @@
+using Mekashron.Domain.Repositories;
+using Mekashron.Domain.Services;
+using Mekashron.Repository.MekashronAPI;
+using Mekashron.Services.Login;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IMekashronApiService, MekashronApiService>();
+builder.Services.AddScoped<IMekashronApiRepository, MekashronApiRepository>();
 
 builder.CreateUmbracoBuilder()
     .AddBackOffice()

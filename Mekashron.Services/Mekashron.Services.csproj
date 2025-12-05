@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mekashron.Domain\Mekashron.Domain.csproj" />
+    <ProjectReference Include="..\Mekashron.Repository\Mekashron.Repository.csproj" />
+    <ProjectReference Include="..\Mekashron.Tools\Mekashron.Tools.csproj" />
+  </ItemGroup>
+
+</Project>
