@@ -1,22 +1,8 @@
 ﻿namespace Mekashron.Domain.Api
 {
-    public class MekashronRegisterResponse : MekashronResponse
+    public class MekashronRegisterResponse
     {
-        public Int32 EntityId { get; }
-        public String AffiliateResultCode { get; }
-        public String AffiliateResultMessage { get; }
-
-        public MekashronRegisterResponse(
-            String code,
-            String message,
-            Int32 entityId,
-            String affiliateResultCode,
-            String affilateResultMessage
-        ) : base(code, message)
-        {
-            EntityId = entityId;
-            AffiliateResultCode = affiliateResultCode;
-            AffiliateResultMessage = affilateResultMessage;
-        }
+        public Int32 ResultCode { get; set; }
+        public String ResultMessage { get; set; }
     }
 }

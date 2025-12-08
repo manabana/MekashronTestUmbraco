@@ -5,6 +5,16 @@ using Mekashron.Services.Login;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+// внедрение HttpClient через Dependency Injection, чтобы использовать в репозитории
+String? mekashronBaseUrl = builder.Configuration["MekashronApi:BaseUrl"];
+if (mekashronBaseUrl is null)
+    throw new Exception("MekashronAPI:BaseURL в appsettings.json не указан или указан некорректно");
+builder.Services.AddHttpClient("MekashronApi", client =>
+    {
+        client.BaseAddress = new Uri(mekashronBaseUrl);
+    }
+);
+
 builder.Services.AddScoped<IMekashronApiService, MekashronApiService>();
 builder.Services.AddScoped<IMekashronApiRepository, MekashronApiRepository>();
 

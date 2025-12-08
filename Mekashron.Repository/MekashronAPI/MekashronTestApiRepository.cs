@@ -67,7 +67,7 @@ namespace Mekashron.Repository.MekashronAPI
                     </env:Envelope>";
         }
 
-        public MekashronRegisterResponse RegisterNewCustomer(CustomerBlank blank)
+        public Task<MekashronRegisterResponse> RegisterNewCustomer(CustomerBlank blank)
         {
             throw new NotImplementedException();
         }

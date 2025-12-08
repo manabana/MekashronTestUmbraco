@@ -22,14 +22,6 @@
             <section class="breadcrumbs">
                 <div class="container">
                     <h1 style="text-align: center; ">@Model.Value("title")</h1>
-                    <!-- <ul class="breadcrumbs__list">
-                        <li>
-                            <a href="index.html">Mekashron</a>
-                        </li>
-                        <li>
-                            <span>Download</span>
-                        </li>
-                    </ul> -->
                 </div>
             </section>
             <section class="info">
@@ -40,25 +32,27 @@
                     <p style="text-align: center; color: #800000;">
                         @Model.Value("warningText")
                     </p>
-                    <form>
+                    <form id="registerForm">
                         <div class="form-group">
                             <label for="name">@Model.Value("NameField")</label>
-                            <input type="text" id="name">
+                            <input type="text" id="name" name="Name">
                         </div>
                         <div class="form-group">
                             <label for="company">@Model.Value("CompanyNameField")</label>
-                            <input type="text" id="company">
+                            <input type="text" id="company" name="Company">
                         </div>
                         <div class="form-group">
                             <label for="phone">@Model.Value("PhoneField")</label>
-                            <input type="tel" id="phone">
+                            <input type="tel" id="phone" name="Phone">
                         </div>
                         <div class="form-group">
                             <label for="email">@Model.Value("EmailField")</label>
-                            <input type="email" id="email">
+                            <input type="email" id="email" name="Email">
                         </div>
                         <button class="button button--accent" type="submit">@Model.Value("submit")</button>
                     </form>
+
+                    <div id="registerResult" style="margin-top:16px;color:#003300"></div>
                 </div>
             </section>
     </main>
@@ -71,6 +65,60 @@
     <script src="@(Url.Content("~/assets/js/swiper-bundle.min.js"))"></script>
     <script src="@(Url.Content("~/assets/js/select.js"))"></script>
     <script src="@(Url.Content("~/assets/js/scripts.js"))"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('registerForm');
+            if (!form) return;
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                var data = {
+                    Name: form.querySelector('[name="Name"]').value,
+                    Company: form.querySelector('[name="Company"]').value,
+                    Phone: form.querySelector('[name="Phone"]').value,
+                    Email: form.querySelector('[name="Email"]').value
+                };
+
+                var btn = form.querySelector('button[type="submit"]');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = 'Sending...';
+                }
+
+                var resultDiv = document.getElementById('registerResult');
+
+                try {
+                    var res = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (!res.ok) {
+                        var err = await res.json().catch(function () { return { error: 'Unknown error' }; });
+                        resultDiv.style.color = '#800000';
+                        resultDiv.textContent = err.error || err.message || JSON.stringify(err);
+                    } else {
+                        var json = await res.json();
+                        resultDiv.style.color = '#003300';
+                        // display the whole response; adjust as needed to show specific fields
+                        resultDiv.textContent = 'Success: ' + JSON.stringify(json);
+                    }
+                } catch (ex) {
+                    resultDiv.style.color = '#800000';
+                    resultDiv.textContent = 'Network error: ' + (ex && ex.message ? ex.message : ex);
+                } finally {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.textContent = '@Model.Value("submit")';
+                    }
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

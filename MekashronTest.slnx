@@ -1,7 +1,9 @@
 <Solution>
+  <Project Path="Mekashron.ConsoleApp/Mekashron.ConsoleApp.csproj" Id="5f1d15e9-98fe-40c5-8fc2-319973681cae" />
   <Project Path="Mekashron.Domain/Mekashron.Domain.csproj" />
   <Project Path="Mekashron.Repository/Mekashron.Repository.csproj" />
   <Project Path="Mekashron.Services/Mekashron.Services.csproj" />
+  <Project Path="Mekashron.Test/Mekashron.Test.csproj" Id="077035b5-703f-4dc5-831d-4c1fbc41026b" />
   <Project Path="Mekashron.Tools/Mekashron.Tools.csproj" />
   <Project Path="MekashronTestUmbraco/MekashronTestUmbraco.csproj" />
 </Solution>
