@@ -9,9 +9,11 @@ namespace MekashronTestUmbraco.Controllers
     public class RegisterController : ControllerBase
     {
         private readonly IMekashronApiService _mekashronApiService;
+        private readonly IConfiguration _configuration;
 
-        public RegisterController(IMekashronApiService mekashronApiService)
+        public RegisterController(IConfiguration configuration, IMekashronApiService mekashronApiService)
         {
+            _configuration = configuration;
             _mekashronApiService = mekashronApiService;
         }
 
@@ -28,19 +30,16 @@ namespace MekashronTestUmbraco.Controllers
         {
             if (request is null) return BadRequest(new { error = "Request is empty" });
 
-            // Build a CustomerBlank with sensible defaults so service validation passes
             var blank = new CustomerBlank
             {
+                OlEntityId = Int32.Parse(_configuration["RegisterEntityData:olEntityId"]!),
+                OlUsername = _configuration["RegisterEntityData:olUsername"]!,
+                OlPassword = _configuration["RegisterEntityData:olPassword"]!,
+                BusinessId = Int32.Parse(_configuration["RegisterEntityData:BusinessId"]!),
+                CategoryId = Int32.Parse(_configuration["RegisterEntityData:CategoryId"]!),
                 Name = request.Name,
                 Email = request.Email,
-                Phone = request.Phone,
-                BusinessId = 1,
-                OlEntityId = 1,
-                CategoryId = 1,
-                // OlUsername must be more than one character to avoid accidental regex match in service
-                OlUsername = (request.Name ?? "user").Replace(" ", "") + System.DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                // a simple default password that meets length requirement
-                OlPassword = GeneratePassword(8)
+                Phone = request.Phone
             };
 
             var result = await _mekashronApiService.RegisterNewCustomer(blank);
@@ -50,23 +49,7 @@ namespace MekashronTestUmbraco.Controllers
                 return BadRequest(new { error = result.Error?.Message, key = result.Error?.Key });
             }
 
-            // Return the deserialized MekashronRegisterResponse to the caller
             return Ok(result.Value);
-        }
-
-        private static string GeneratePassword(int length)
-        {
-            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var sb = new System.Text.StringBuilder(length);
-            using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
-            var buffer = new byte[4];
-            for (int i = 0; i < length; i++)
-            {
-                rng.GetBytes(buffer);
-                var idx = System.BitConverter.ToUInt32(buffer, 0) % (uint)chars.Length;
-                sb.Append(chars[(int)idx]);
-            }
-            return sb.ToString();
         }
     }
 }
