@@ -1,7 +1,10 @@
 using Mekashron.Domain.Repositories;
+using Mekashron.Domain.Repositories.GeoIp;
 using Mekashron.Domain.Services;
 using Mekashron.Repository.MekashronAPI;
+using Mekashron.Repository.OuterServices;
 using Mekashron.Services.Login;
+using Mekashron.Services.OuterServices;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,9 @@ builder.Services.AddHttpClient("MekashronApi", client =>
         client.BaseAddress = new Uri(mekashronBaseUrl);
     }
 );
+
+builder.Services.AddScoped<IGeoIpService,GeoIpService>();
+builder.Services.AddHttpClient<IGeoIpRepository, GeoIpRepository>();
 
 builder.Services.AddScoped<IMekashronApiService, MekashronApiService>();
 builder.Services.AddScoped<IMekashronApiRepository, MekashronApiRepository>();

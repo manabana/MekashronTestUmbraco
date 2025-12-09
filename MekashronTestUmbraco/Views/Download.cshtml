@@ -100,11 +100,16 @@
                         var err = await res.json().catch(function () { return { error: 'Unknown error' }; });
                         resultDiv.style.color = '#800000';
                         resultDiv.textContent = err.error || err.message || JSON.stringify(err);
-                    } else {
+                    } 
+                    else {
                         var json = await res.json();
-                        resultDiv.style.color = '#003300';
-                        // display the whole response; adjust as needed to show specific fields
-                        resultDiv.textContent = 'Success: ' + JSON.stringify(json);
+                        if((json.resultCode == 0 || json.resultCode == -5674) && json.downloadUrl != null){
+                            downloadFile(json.downloadUrl);
+                        }
+                        else{
+                            resultDiv.style.color = '#003300';
+                            resultDiv.textContent = 'Success: ' + JSON.stringify(json);
+                        }
                     }
                 } catch (ex) {
                     resultDiv.style.color = '#800000';
@@ -117,6 +122,30 @@
                 }
             });
         });
+    </script>
+
+    <script>
+    async function downloadFile(url) {
+        const res = await fetch(url, { method: 'GET' });
+
+        if (!res.ok) {
+            throw new Error('downloading failed');
+        }
+
+        const blob = await res.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+
+        a.download = 'mekashronCallCenterV7.exe';
+
+        document.body.appendChild(a);
+        a.click();
+
+        a.remove();
+        window.URL.revokeObjectURL(downloadUrl);
+    }
     </script>
 
 </body>

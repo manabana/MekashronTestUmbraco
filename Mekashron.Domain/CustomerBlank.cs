@@ -13,7 +13,8 @@ namespace Mekashron.Domain
         public String? Phone { get; set; }
         public String? Name { get; set; }
         public String? Password { get; set; }
-        
+        public String? CountryISO { get; set; }
+
 
         public string GetXmlFieldTags()
         {
@@ -31,7 +32,7 @@ namespace Mekashron.Domain
                                 <FirstName xsi:type=""xsd:string""></FirstName>
                                 <LastName xsi:type=""xsd:string""></LastName>
                                 <Mobile xsi:type=""xsd:string"">{this.Phone}</Mobile>
-                                <CountryISO xsi:type=""xsd:string"">{0}</CountryISO>
+                                <CountryISO xsi:type=""xsd:string"">{this.CountryISO}</CountryISO>
                                 <affiliate_entityID xsi:type=""xsd:int"">0</affiliate_entityID>
                             </ns1:Entity_Add>
                 ";

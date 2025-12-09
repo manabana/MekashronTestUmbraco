@@ -14,10 +14,8 @@ namespace Mekashron.ConsoleApp
     {
         static async Task Main(string[] args)
         {
-            // DI контейнер
             var services = new ServiceCollection();
 
-            // внедрение HttpClient через Dependency Injection, чтобы использовать в репозитории
             String? mekashronBaseUrl = "http://bzq.mekashron.co.il:33326/soap/IICUTech";
             if (mekashronBaseUrl is null)
                 throw new Exception("MekashronAPI:BaseURL в appsettings.json не указан или указан некорректно");
@@ -27,13 +25,11 @@ namespace Mekashron.ConsoleApp
             }
             );
 
-            // регистрируем репозиторий и сервис
             services.AddTransient<IMekashronApiRepository, MekashronApiRepository>();
             services.AddTransient<IMekashronApiService, MekashronApiService>();
 
             var provider = services.BuildServiceProvider();
 
-            // получаем сервис
             var service = provider.GetRequiredService<IMekashronApiService>();
 
             Console.Write("Email: ");

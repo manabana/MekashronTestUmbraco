@@ -1,20 +1,26 @@
-using Microsoft.AspNetCore.Mvc;
 using Mekashron.Domain;
 using Mekashron.Domain.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace MekashronTestUmbraco.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
     public class RegisterController : ControllerBase
     {
         private readonly IMekashronApiService _mekashronApiService;
+        private readonly IGeoIpService _geoIpService;
         private readonly IConfiguration _configuration;
 
-        public RegisterController(IConfiguration configuration, IMekashronApiService mekashronApiService)
+        public RegisterController(
+            IConfiguration configuration,
+            IMekashronApiService mekashronApiService,
+            IGeoIpService geoIpService
+        )
         {
             _configuration = configuration;
             _mekashronApiService = mekashronApiService;
+            _geoIpService = geoIpService;
         }
 
         public class RegisterRequest
@@ -25,10 +31,21 @@ namespace MekashronTestUmbraco.Controllers
             public string? Email { get; set; }
         }
 
-        [HttpPost]
+        [HttpPost("/api/register")]
         public async Task<IActionResult> Post([FromBody] RegisterRequest request)
         {
             if (request is null) return BadRequest(new { error = "Request is empty" });
+
+            String? ipString = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()
+                                ?? HttpContext.Connection.RemoteIpAddress?.ToString();
+
+            IPAddress? ip = ipString.IsWhiteSpace() ? null : IPAddress.Parse(ipString);
+
+            String? countryISO = null;
+            if (ip is not null)
+            {
+                countryISO = await _geoIpService.GetCountryAsync(ip);
+            }
 
             var blank = new CustomerBlank
             {
@@ -39,7 +56,8 @@ namespace MekashronTestUmbraco.Controllers
                 CategoryId = Int32.Parse(_configuration["RegisterEntityData:CategoryId"]!),
                 Name = request.Name,
                 Email = request.Email,
-                Phone = request.Phone
+                Phone = request.Phone,
+                CountryISO = countryISO ?? "IL"
             };
 
             var result = await _mekashronApiService.RegisterNewCustomer(blank);
@@ -50,6 +68,32 @@ namespace MekashronTestUmbraco.Controllers
             }
 
             return Ok(result.Value);
+        }
+
+
+        [HttpGet("/api/download")]
+        public async Task<IActionResult> Download()
+        {
+            String fileUrl = _configuration["MekashronApi:CallCenterV7Url"] ?? throw new Exception("MekashronApi:CallCenterV7Url in appsettings.json are null");
+
+            using var httpClient = new HttpClient();
+
+            var response = await httpClient.GetAsync(
+                fileUrl,
+                HttpCompletionOption.ResponseHeadersRead);
+
+            if (!response.IsSuccessStatusCode)
+                return StatusCode((int)response.StatusCode, "File unavailable");
+
+            var stream = await response.Content.ReadAsStreamAsync();
+            var contentType = response.Content.Headers.ContentType?.ToString()
+                ?? "application/octet-stream";
+
+            return File(
+                stream,
+                contentType,
+                "mekashroncallcenterV7.exe"
+            );
         }
     }
 }

@@ -28,7 +28,8 @@ namespace Mekashron.Repository.MekashronAPI
         {
             String soapXml = MekashronApiXmlGenerator.GenerateXmlRequest(blank);
 
-            StringContent content = new StringContent(soapXml, Encoding.UTF8, "text/xml");
+            using StringContent content = 
+                new(soapXml, Encoding.UTF8, "text/xml");
 
             HttpResponseMessage response = await _httpClient.PostAsync("", content);
             response.EnsureSuccessStatusCode();
@@ -37,8 +38,12 @@ namespace Mekashron.Repository.MekashronAPI
 
             XDocument xml = XDocument.Parse(xmlString);
 
+            var returnElement = 
+                xml.Descendants()
+                .FirstOrDefault(e => e.Name.LocalName == "return");
+
             // извлечение JSON из XML
-            String json = xml.Descendants("return").First().Value.Trim();
+            String json = returnElement!.Value.Trim();
 
             // десериализация JSON в MekashronRegisterResponse
             MekashronRegisterResponse? result =

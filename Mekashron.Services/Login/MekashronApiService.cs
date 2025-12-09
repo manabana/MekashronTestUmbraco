@@ -3,6 +3,7 @@ using Mekashron.Domain.Api;
 using Mekashron.Domain.Repositories;
 using Mekashron.Domain.Services;
 using Mekashron.Tools;
+using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,12 +13,15 @@ namespace Mekashron.Services.Login
     public class MekashronApiService : IMekashronApiService
     {
         readonly IMekashronApiRepository _mekashronApiRepository;
+        readonly IConfiguration _configuration;
 
         public MekashronApiService(
-            IMekashronApiRepository mekashronApiRepository
+            IMekashronApiRepository mekashronApiRepository,
+            IConfiguration configuration
         )
         {
             _mekashronApiRepository = mekashronApiRepository;
+            _configuration = configuration;
         }
 
         public async Task<Result<MekashronLoginResponse>> Login(LoginBlank blank)
@@ -40,6 +44,11 @@ namespace Mekashron.Services.Login
 
             Task<MekashronRegisterResponse> response = 
                 _mekashronApiRepository.RegisterNewCustomer(blank);
+
+            if (response.Result.ResultCode is 0 or -5674) 
+                response.Result.DownloadUrl = "/api/download";
+
+            //TODO тут вызывать логгинг скачки
 
             return Result<MekashronRegisterResponse>.Success(await response);
 
@@ -80,8 +89,10 @@ namespace Mekashron.Services.Login
             if (blank.Email is null || !Regex.IsMatch(blank.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase))
                 return Result.Failure("It's not email", "EmailIsInvalid");
 
+            if (blank.CountryISO.IsWhiteSpace() && blank.CountryISO!.Length != 2) return Result.Failure("Country ISO is invalid", "CountryISOIsInvalid");
+
             Regex validatePhoneNumberRegex = new Regex("^\\+?[1-9][0-9]{7,14}$");
-            if (blank.Phone is null || blank.Phone.IsWhiteSpace()) return Result.Failure("Phone number is empty");
+            if (blank.Phone is null || blank.Phone.IsWhiteSpace()) return Result.Failure("Phone number is empty", "PhoneNumberIsEmpty");
             if (!validatePhoneNumberRegex.IsMatch(blank.Phone)) return Result.Failure("Enter correct phone number", "PhoneNumberIsInvalid");
 
             return Result.Success();
