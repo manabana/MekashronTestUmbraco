@@ -68,57 +68,127 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var form = document.getElementById('registerForm');
+            const form = document.getElementById('registerForm');
             if (!form) return;
+
+            const phoneRegex = /^\+?[1-9][0-9]{7,14}$/;
+
+            function isWhiteSpace(value) {
+                return !value || value.trim().length === 0;
+            }
+
+            function clearErrors() {
+                form.querySelectorAll('.error-text').forEach(e => e.remove());
+                form.querySelectorAll('input').forEach(i => {
+                    i.style.border = '';
+                    i.style.backgroundColor = '';
+                });
+            }
+
+            function showError(input, message) {
+                const error = document.createElement('div');
+                error.className = 'error-text';
+                error.textContent = message;
+
+                error.style.color = '#800000';
+                error.style.fontSize = '13px';
+                error.style.marginTop = '6px';
+
+                input.style.border = '2px solid #800000';
+                input.style.backgroundColor = '#fff5f5';
+
+                input.parentNode.appendChild(error);
+            }
+
+            ['input', 'change'].forEach(evt => {
+                form.addEventListener(evt, e => {
+                    const input = e.target;
+                    if (!(input instanceof HTMLInputElement)) return;
+
+                    const err = input.parentNode.querySelector('.error-text');
+                    if (!err) return;
+
+                    input.style.border = '';
+                    input.style.backgroundColor = '';
+                    err.remove();
+                });
+            });
 
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
+                clearErrors();
 
-                var data = {
-                    Name: form.querySelector('[name="Name"]').value,
-                    Company: form.querySelector('[name="Company"]').value,
-                    Phone: form.querySelector('[name="Phone"]').value,
-                    Email: form.querySelector('[name="Email"]').value
-                };
+                let hasErrors = false;
 
-                var btn = form.querySelector('button[type="submit"]');
-                if (btn) {
-                    btn.disabled = true;
-                    btn.textContent = 'Sending...';
+                const name = form.querySelector('[name="Name"]');
+                const company = form.querySelector('[name="Company"]');
+                const phone = form.querySelector('[name="Phone"]');
+                const email = form.querySelector('[name="Email"]');
+
+                if (isWhiteSpace(name.value)) {
+                    showError(name, 'Name is required');
+                    hasErrors = true;
                 }
 
-                var resultDiv = document.getElementById('registerResult');
+                if (isWhiteSpace(company.value)) {
+                    showError(company, 'Company name is required');
+                    hasErrors = true;
+                }
+
+                if (isWhiteSpace(phone.value)) {
+                    showError(phone, 'Phone number is empty');
+                    hasErrors = true;
+                }
+                else if (!phoneRegex.test(phone.value)) {
+                    showError(phone, 'Enter correct phone number');
+                    hasErrors = true;
+                }
+
+                if (isWhiteSpace(email.value)) {
+                    showError(email, 'Email is required');
+                    hasErrors = true;
+                }
+
+                if (hasErrors) return;
+
+                const data = {
+                    Name: name.value.trim(),
+                    Company: company.value.trim(),
+                    Phone: phone.value.trim(),
+                    Email: email.value.trim()
+                };
+
+                const btn = form.querySelector('button[type="submit"]');
+                btn.disabled = true;
+                btn.textContent = 'Sending...';
+
+                const resultDiv = document.getElementById('registerResult');
 
                 try {
-                    var res = await fetch('/api/register', {
+                    const res = await fetch('/api/register', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
                     });
 
                     if (!res.ok) {
-                        var err = await res.json().catch(function () { return { error: 'Unknown error' }; });
+                        const err = await res.json().catch(() => ({ error: 'Unknown error' }));
                         resultDiv.style.color = '#800000';
-                        resultDiv.textContent = err.error || err.message || JSON.stringify(err);
-                    } 
+                        resultDiv.textContent = err.error || err.message;
+                    }
                     else {
-                        var json = await res.json();
-                        if((json.resultCode == 0 || json.resultCode == -5674) && json.downloadUrl != null){
-                            downloadFile(json.downloadUrl);
-                        }
-                        else{
-                            resultDiv.style.color = '#003300';
-                            resultDiv.textContent = 'Success: ' + JSON.stringify(json);
-                        }
+                        const json = await res.json();
+                        resultDiv.style.color = '#003300';
+                        resultDiv.textContent = 'Success';
                     }
-                } catch (ex) {
+                }
+                catch (ex) {
                     resultDiv.style.color = '#800000';
-                    resultDiv.textContent = 'Network error: ' + (ex && ex.message ? ex.message : ex);
-                } finally {
-                    if (btn) {
-                        btn.disabled = false;
-                        btn.textContent = '@Model.Value("submit")';
-                    }
+                    resultDiv.textContent = 'Network error';
+                }
+                finally {
+                    btn.disabled = false;
+                    btn.textContent = '@Model.Value("submit")';
                 }
             });
         });
