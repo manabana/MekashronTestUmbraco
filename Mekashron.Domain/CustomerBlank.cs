@@ -19,8 +19,7 @@ namespace Mekashron.Domain
         public string GetXmlFieldTags()
         {
             return
-                $@"
-                    <ns1:Entity_Add env:encodingStyle=""http://www.w3.org/2003/05/soap-encoding"">
+                $@"<ns1:Entity_Add env:encodingStyle=""http://www.w3.org/2003/05/soap-encoding"">
                                 <ol_EntityId xsi:type=""xsd:int"">{this.OlEntityId}</ol_EntityId>
                                 <ol_UserName xsi:type=""xsd:string"">{this.OlUsername}</ol_UserName>
                                 <ol_Password xsi:type=""xsd:string"">{this.OlPassword}</ol_Password>
@@ -34,8 +33,7 @@ namespace Mekashron.Domain
                                 <Mobile xsi:type=""xsd:string"">{this.Phone}</Mobile>
                                 <CountryISO xsi:type=""xsd:string"">{this.CountryISO}</CountryISO>
                                 <affiliate_entityID xsi:type=""xsd:int"">0</affiliate_entityID>
-                            </ns1:Entity_Add>
-                ";
+                            </ns1:Entity_Add>";
 
             
         }

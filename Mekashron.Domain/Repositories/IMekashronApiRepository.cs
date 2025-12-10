@@ -6,5 +6,6 @@ namespace Mekashron.Domain.Repositories
     {
         Task<MekashronLoginResponse> Login(LoginBlank blank);
         Task<MekashronRegisterResponse> RegisterNewCustomer(CustomerBlank blank);
+        Task<CustomTableResponse> SaveLog(CustomFieldsTableBlank blank);
     }
 }

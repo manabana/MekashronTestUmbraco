@@ -13,15 +13,12 @@ namespace Mekashron.Services.Login
     public class MekashronApiService : IMekashronApiService
     {
         readonly IMekashronApiRepository _mekashronApiRepository;
-        readonly IConfiguration _configuration;
 
         public MekashronApiService(
-            IMekashronApiRepository mekashronApiRepository,
-            IConfiguration configuration
+            IMekashronApiRepository mekashronApiRepository
         )
         {
             _mekashronApiRepository = mekashronApiRepository;
-            _configuration = configuration;
         }
 
         public async Task<Result<MekashronLoginResponse>> Login(LoginBlank blank)
@@ -98,5 +95,12 @@ namespace Mekashron.Services.Login
             return Result.Success();
 
         }
+
+        public async Task<Result<CustomTableResponse>> SaveLog(CustomFieldsTableBlank blank)
+        {
+            Task<CustomTableResponse> response = _mekashronApiRepository.SaveLog(blank);
+            return Result<CustomTableResponse>.Success(await response);
+        }
+
     }
 }

@@ -71,5 +71,10 @@ namespace Mekashron.Repository.MekashronAPI
         {
             throw new NotImplementedException();
         }
+
+        public Task<CustomTableResponse> SaveLog(CustomFieldsTableBlank blank)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

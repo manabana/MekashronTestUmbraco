@@ -1,6 +1,7 @@
 ﻿using Mekashron.Domain;
 using Mekashron.Domain.Api;
 using Mekashron.Domain.Repositories;
+using Mekashron.Repository.ApiFriendlyBlanks;
 using Mekashron.Tools;
 using System;
 using System.Collections.Generic;
@@ -26,9 +27,19 @@ namespace Mekashron.Repository.MekashronAPI
 
         public async Task<MekashronRegisterResponse> RegisterNewCustomer(CustomerBlank blank)
         {
+            return await FetchApi<MekashronRegisterResponse, CustomerBlank>(blank);
+        }
+
+        public async Task<CustomTableResponse> SaveLog(CustomFieldsTableBlank blank)
+        {
+            return await FetchApi<CustomTableResponse, CustomFieldsTableBlank>(blank);
+        }
+
+        private async Task<R> FetchApi<R, T>(T blank) where T : IApiRequestBlank
+        {
             String soapXml = MekashronApiXmlGenerator.GenerateXmlRequest(blank);
 
-            using StringContent content = 
+            using StringContent content =
                 new(soapXml, Encoding.UTF8, "text/xml");
 
             HttpResponseMessage response = await _httpClient.PostAsync("", content);
@@ -38,7 +49,7 @@ namespace Mekashron.Repository.MekashronAPI
 
             XDocument xml = XDocument.Parse(xmlString);
 
-            var returnElement = 
+            var returnElement =
                 xml.Descendants()
                 .FirstOrDefault(e => e.Name.LocalName == "return");
 
@@ -46,8 +57,8 @@ namespace Mekashron.Repository.MekashronAPI
             String json = returnElement!.Value.Trim();
 
             // десериализация JSON в MekashronRegisterResponse
-            MekashronRegisterResponse? result =
-                JsonSerializer.Deserialize<MekashronRegisterResponse>
+            R? result =
+                JsonSerializer.Deserialize<R>
                 (
                     json,
                     new JsonSerializerOptions
@@ -56,7 +67,7 @@ namespace Mekashron.Repository.MekashronAPI
                     }
                 );
 
-            return result ?? throw new Exception("Failed to deserialize MekashronLoginResponse");
+            return result ?? throw new Exception($"Failed to deserialize {nameof(R)}");
         }
     }
 }
