@@ -1,4 +1,6 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@using System.Text.Json
+
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @{
@@ -55,9 +57,9 @@
                     <div id="registerResult" style="margin-top:16px;color:#003300"></div>
                 </div>
             </section>
-    </main>
+        </main>
 
-	    @await Html.PartialAsync("Partials/Footer")
+        @await Html.PartialAsync("Partials/Footer")
 
     </div>
 
@@ -65,6 +67,22 @@
     <script src="@(Url.Content("~/assets/js/swiper-bundle.min.js"))"></script>
     <script src="@(Url.Content("~/assets/js/select.js"))"></script>
     <script src="@(Url.Content("~/assets/js/scripts.js"))"></script>
+
+    <script>
+        const WordsDictionary = {
+            nameRequired: @Html.Raw(JsonSerializer.Serialize(Model.Value("NameRequired"))),
+            companyRequired: @Html.Raw(JsonSerializer.Serialize(Model.Value("CompanyRequired"))),
+            phoneNumberEmpty: @Html.Raw(JsonSerializer.Serialize(Model.Value("PhoneNumberEmpty"))),
+            phoneNumberInvalid: @Html.Raw(JsonSerializer.Serialize(Model.Value("PhoneNumberInvalid"))),
+            emailRequired: @Html.Raw(JsonSerializer.Serialize(Model.Value("EmailRequired"))),
+            sending: @Html.Raw(JsonSerializer.Serialize(Model.Value("sending"))),
+            networkError: @Html.Raw(JsonSerializer.Serialize(Model.Value("NetworkError"))),
+            submitText: @Html.Raw(JsonSerializer.Serialize(Model.Value("submit"))),
+            downloadingFailed: @Html.Raw(JsonSerializer.Serialize(Model.Value("DownloadingFailed"))),
+            unknownError: @Html.Raw(JsonSerializer.Serialize(Model.Value("UnknownError")))
+        };
+    </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -126,26 +144,26 @@
                 const email = form.querySelector('[name="Email"]');
 
                 if (isWhiteSpace(name.value)) {
-                    showError(name, 'Name is required');
+                    showError(name, WordsDictionary.nameRequired);
                     hasErrors = true;
                 }
 
                 if (isWhiteSpace(company.value)) {
-                    showError(company, 'Company name is required');
+                    showError(company, WordsDictionary.companyRequired);
                     hasErrors = true;
                 }
 
                 if (isWhiteSpace(phone.value)) {
-                    showError(phone, 'Phone number is empty');
+                    showError(phone, WordsDictionary.phoneNumberEmpty);
                     hasErrors = true;
                 }
                 else if (!phoneRegex.test(phone.value)) {
-                    showError(phone, 'Enter correct phone number');
+                    showError(phone, WordsDictionary.phoneNumberInvalid);
                     hasErrors = true;
                 }
 
                 if (isWhiteSpace(email.value)) {
-                    showError(email, 'Email is required');
+                    showError(email, WordsDictionary.emailRequired);
                     hasErrors = true;
                 }
 
@@ -160,7 +178,7 @@
 
                 const btn = form.querySelector('button[type="submit"]');
                 btn.disabled = true;
-                btn.textContent = 'Sending...';
+                btn.textContent = WordsDictionary.sending;
 
                 const resultDiv = document.getElementById('registerResult');
 
@@ -172,7 +190,7 @@
                     });
 
                     if (!res.ok) {
-                        const err = await res.json().catch(() => ({ error: 'Unknown error' }));
+                        const err = await res.json().catch(() => ({ error: WordsDictionary.unknownError }));
                         resultDiv.style.color = '#800000';
                         resultDiv.textContent = err.error || err.message;
                     }
@@ -184,38 +202,38 @@
                 }
                 catch (ex) {
                     resultDiv.style.color = '#800000';
-                    resultDiv.textContent = 'Network error';
+                    resultDiv.textContent = WordsDictionary.networkError;
                 }
                 finally {
                     btn.disabled = false;
-                    btn.textContent = '@Model.Value("submit")';
+                    btn.textContent = WordsDictionary.submitText;
                 }
             });
         });
     </script>
 
     <script>
-    async function downloadFile(url) {
-        const res = await fetch(url, { method: 'GET' });
+        async function downloadFile(url) {
+            const res = await fetch(url, { method: 'GET' });
 
-        if (!res.ok) {
-            throw new Error('downloading failed');
+            if (!res.ok) {
+                throw new Error('downloading failed');
+            }
+
+            const blob = await res.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+
+            a.download = 'mekashronCallCenterV7.exe';
+
+            document.body.appendChild(a);
+            a.click();
+
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
         }
-
-        const blob = await res.blob();
-        const downloadUrl = window.URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.href = downloadUrl;
-
-        a.download = 'mekashronCallCenterV7.exe';
-
-        document.body.appendChild(a);
-        a.click();
-
-        a.remove();
-        window.URL.revokeObjectURL(downloadUrl);
-    }
     </script>
 
 </body>
