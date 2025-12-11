@@ -7,6 +7,11 @@
     Guid indexPageId = Guid.Parse("41e0ccdd-4a1d-4aa8-a022-abc7d5555024");
     IPublishedContent? indexPage = Umbraco.Content(indexPageId);
     if (indexPage is null) throw new Exception("index page not found");
+
+    Guid downloadCallCenterV7PageId = Guid.Parse("0f2be95e-e05f-4450-afe9-58141217c704");
+    IPublishedContent? downloadCallCenterV7Page = Umbraco.Content(downloadCallCenterV7PageId);
+    if (downloadCallCenterV7Page is null) throw new Exception("downloadCallCenterV7 Page not found");
+
 }
 
 
