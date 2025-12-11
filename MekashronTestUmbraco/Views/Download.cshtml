@@ -1,4 +1,5 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using System.Globalization
+@using Umbraco.Cms.Web.Common.PublishedModels;
 @using System.Text.Json
 
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
@@ -11,7 +12,8 @@
     Guid downloadCallCenterV7PageId = Guid.Parse("0f2be95e-e05f-4450-afe9-58141217c704");
     IPublishedContent? downloadCallCenterV7Page = Umbraco.Content(downloadCallCenterV7PageId);
     if (downloadCallCenterV7Page is null) throw new Exception("downloadCallCenterV7 Page not found");
-
+    String currentLang = CultureInfo.CurrentUICulture.Name ?? "en";
+    String downloadCallCenterV7PageUrl = downloadCallCenterV7Page.Url(currentLang);
 }
 
 
@@ -86,6 +88,8 @@
             downloadingFailed: @Html.Raw(JsonSerializer.Serialize(Model.Value("DownloadingFailed"))),
             unknownError: @Html.Raw(JsonSerializer.Serialize(Model.Value("UnknownError")))
         };
+
+        const downloadCallCenterPageUrl = @Html.Raw(JsonSerializer.Serialize(downloadCallCenterV7PageUrl));
     </script>
 
 
@@ -203,6 +207,8 @@
                         const json = await res.json();
                         resultDiv.style.color = '#003300';
                         resultDiv.textContent = 'Success';
+
+                        window.location.href = downloadCallCenterPageUrl;
                     }
                 }
                 catch (ex) {

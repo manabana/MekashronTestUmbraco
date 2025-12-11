@@ -74,6 +74,17 @@
 
 
     <script>
+        function downloadFileDirect(url) {
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "";
+            a.click();
+        }
+
+        async function downloadLink() {
+            downloadFileDirect("/api/download")
+        }
+
         async function downloadFile(url) {
             const res = await fetch(url, { method: 'GET' });
 
@@ -95,6 +106,14 @@
             a.remove();
             window.URL.revokeObjectURL(downloadUrl);
         }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            downloadFileDirect("/api/download").catch(err => {
+                alert("Download failed. Try to authorize");
+            });
+        });
     </script>
 
 </body>

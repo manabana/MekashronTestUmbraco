@@ -39,10 +39,10 @@ namespace Mekashron.ConsoleApp
                 OlPassword = "123456",
                 TableId = 99,
                 RecordId = 0,
-                EntityId = 49272,
                 QueryString = "CallCenterV7",
-                CurrentDateTimeUTC = DateTime.UtcNow,
-                VisitorIp = "149.40.61.81"
+                //EntityId = 49272,
+                //CurrentDateTimeUTC = DateTime.UtcNow,
+                //VisitorIp = "149.40.61.81"
 
             };
 

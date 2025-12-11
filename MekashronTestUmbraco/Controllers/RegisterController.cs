@@ -1,5 +1,7 @@
 using Mekashron.Domain;
+using Mekashron.Domain.Api;
 using Mekashron.Domain.Services;
+using Mekashron.Tools;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -60,20 +62,51 @@ namespace MekashronTestUmbraco.Controllers
                 CountryISO = countryISO ?? "IL"
             };
 
-            var result = await _mekashronApiService.RegisterNewCustomer(blank);
+            Result<MekashronRegisterResponse> result = await _mekashronApiService.RegisterNewCustomer(blank);
 
             if (!result.IsSuccess)
             {
                 return BadRequest(new { error = result.Error?.Message, key = result.Error?.Key });
             }
 
+            if(result.Value?.EntityId is null) return BadRequest(new { error = "EntityId is null in response" });
+
+            Response.Cookies.Append("download_allowed", "1", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(10)
+            });
+
+            CustomFieldsTableBlank logBlank = GenerateLogBlank(result.Value.EntityId.Value, ipString);
+            await _mekashronApiService.SaveLog(logBlank);
+
             return Ok(result.Value);
         }
 
+        private CustomFieldsTableBlank GenerateLogBlank(Int32 entityId, String ip) =>
+            new CustomFieldsTableBlank
+            {
+                OlEntityId = Int32.Parse(_configuration["MekashronLogger:olEntityId"]!),
+                OlUsername = _configuration["MekashronLogger:olUsername"],
+                OlPassword = _configuration["MekashronLogger:olPassword"],
+                TableId = Int32.Parse(_configuration["MekashronLogger:tableId"]!),
+                RecordId = Int32.Parse(_configuration["MekashronLogger:recordId"]!),
+                QueryString = _configuration["MekashronLogger:queryString"],
+                EntityId = entityId,
+                CurrentDateTimeUTC = DateTime.UtcNow,
+                VisitorIp = ip
+            };
 
-        [HttpGet("/api/download")]
+
+
+    [HttpGet("/api/download")]
         public async Task<IActionResult> Download()
         {
+            if (!Request.Cookies.TryGetValue("download_allowed", out var allowed) || allowed != "1")
+                return Unauthorized("Not allowed");
+
             String fileUrl = _configuration["MekashronApi:CallCenterV7Url"] ?? throw new Exception("MekashronApi:CallCenterV7Url in appsettings.json are null");
 
             using var httpClient = new HttpClient();
@@ -86,14 +119,13 @@ namespace MekashronTestUmbraco.Controllers
                 return StatusCode((int)response.StatusCode, "File unavailable");
 
             var stream = await response.Content.ReadAsStreamAsync();
-            var contentType = response.Content.Headers.ContentType?.ToString()
-                ?? "application/octet-stream";
+            var contentType = response.Content.Headers.ContentType?.MediaType
+                    ?? "application/octet-stream";
 
-            return File(
-                stream,
-                contentType,
-                "mekashroncallcenterV7.exe"
-            );
+            return new FileStreamResult(stream, contentType)
+            {
+                FileDownloadName = "mekashroncallcenterV7.exe"
+            };
         }
     }
 }

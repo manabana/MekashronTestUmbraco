@@ -1,9 +1,12 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@using System.Globalization
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @{
     Guid downloadPageId = Guid.Parse("da6a2021-2276-429e-9944-9e83acec41e4");
     IPublishedContent? downloadPage = Umbraco.Content(downloadPageId);
     if (downloadPage is null) throw new Exception("Download page not found");
+    String currentLang = CultureInfo.CurrentUICulture.Name ?? "en";
+    String downloadPageUrl = downloadPage.Url(currentLang);
 }
 
 <!DOCTYPE html>
