@@ -14,7 +14,7 @@ namespace Mekashron.Repository.OuterServices
             _http = http;
         }
 
-        public Task<GeoIpResponse?> GetGeoIpResponse(IPAddress ip)
+        public Task<GeoIpResponse?> GetGeoIpResponse(String ip)
         {
             using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             try

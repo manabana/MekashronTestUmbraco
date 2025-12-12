@@ -9,7 +9,7 @@ namespace Mekashron.Domain.Repositories.GeoIp
 {
     public interface IGeoIpRepository
     {
-        Task<GeoIpResponse?> GetGeoIpResponse(IPAddress ip);
+        Task<GeoIpResponse?> GetGeoIpResponse(String ip);
 
     }
 }

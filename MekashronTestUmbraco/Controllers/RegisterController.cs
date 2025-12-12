@@ -38,10 +38,7 @@ namespace MekashronTestUmbraco.Controllers
         {
             if (request is null) return BadRequest(new { error = "Request is empty" });
 
-            String? ipString = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()
-                                ?? HttpContext.Connection.RemoteIpAddress?.ToString();
-
-            IPAddress? ip = ipString.IsWhiteSpace() ? null : IPAddress.Parse(ipString);
+            String? ip = TryGetVisitorIp();
 
             String? countryISO = null;
             if (ip is not null)
@@ -79,10 +76,77 @@ namespace MekashronTestUmbraco.Controllers
                 Expires = DateTimeOffset.UtcNow.AddMinutes(10)
             });
 
-            CustomFieldsTableBlank logBlank = GenerateLogBlank(result.Value.EntityId.Value, ipString);
-            await _mekashronApiService.SaveLog(logBlank);
+            if (ip is not null)
+            {
+                CustomFieldsTableBlank logBlank = GenerateLogBlank(result.Value.EntityId.Value, ip);
+                await _mekashronApiService.SaveLog(logBlank);
+            }
 
             return Ok(result.Value);
+        }
+
+        private String? TryGetVisitorIp()
+        {
+            try
+            {
+                String?[] headerKeys = new[]
+                {
+                    "CF-Connecting-IP",
+                    "X-Forwarded-For",
+                    "X-Real-IP"
+                };
+
+                foreach (String? key in headerKeys)
+                {
+                    String? raw = HttpContext.Request.Headers[key].FirstOrDefault();
+                    if (!String.IsNullOrWhiteSpace(raw))
+                    {
+                        String firstIp = raw.Split(',').First().Trim();
+
+                        if (IPAddress.TryParse(firstIp, out var ipParsed))
+                        {
+                            if (!IsLocalIp(ipParsed))
+                                return firstIp;
+                        }
+                    }
+                }
+
+                IPAddress? directIp = HttpContext.Connection.RemoteIpAddress;
+                if (directIp != null)
+                {
+                    String directIpString = directIp.ToString();
+
+                    if (!IsLocalIp(directIp))
+                        return directIpString;
+                }
+
+                return null;
+
+            }
+            catch { return null;  }
+        }
+
+        private static bool IsLocalIp(IPAddress ip)
+        {
+            if (IPAddress.IsLoopback(ip)) return true;
+
+            if (ip.Equals(IPAddress.IPv6Loopback)) return true;
+
+            // Ћокальные диапазоны
+            byte[] bytes = ip.GetAddressBytes();
+
+            switch (bytes[0])
+            {
+                case 10:       // 10.0.0.0 Ц 10.255.255.255
+                case 127:      // 127.0.0.1 Ц localhost
+                    return true;
+                case 172:
+                    return bytes[1] >= 16 && bytes[1] <= 31;
+                case 192:
+                    return bytes[1] == 168;
+            }
+
+            return false;
         }
 
         private CustomFieldsTableBlank GenerateLogBlank(Int32 entityId, String ip) =>

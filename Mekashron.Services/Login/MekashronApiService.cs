@@ -45,8 +45,6 @@ namespace Mekashron.Services.Login
             if (response.Result.ResultCode is 0 or -5674) 
                 response.Result.DownloadUrl = "/api/download";
 
-            //TODO тут вызывать логгинг скачки
-
             return Result<MekashronRegisterResponse>.Success(await response);
 
         }

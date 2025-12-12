@@ -16,7 +16,7 @@ namespace Mekashron.Services.OuterServices
             _geoIpRepository = geoIpRepository;
         }
 
-        public async Task<String?> GetCountryAsync(IPAddress ip)
+        public async Task<String?> GetCountryAsync(String ip)
         {
             var response = await _geoIpRepository.GetGeoIpResponse(ip);
 
